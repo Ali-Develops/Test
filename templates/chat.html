@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Chatbot</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+<h2>Admin Chatbot</h2>
+
+<input id="msgInput" placeholder="Type command">
+<button onclick="send()">Send</button>
+
+<div id="chat" class="chat-box"></div>
+
+<a href="/logout">Logout</a>
+</div>
+
+<script>
+async function send(){
+  let msg=document.getElementById("msgInput").value;
+
+  let res=await fetch("/chat",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message:msg})
+  });
+
+  let data=await res.json();
+
+  document.getElementById("chat").innerHTML +=
+      "<p>"+data.reply+"</p>";
+}
+</script>
+
+</body>
+</html>

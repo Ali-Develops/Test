@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+<h2>Login to Chat-Bot</h2>
+
+<input id="email" placeholder="Enter email">
+<button onclick="login()">Login</button>
+
+<p id="msg"></p>
+</div>
+
+<script>
+async function login(){
+  let email = document.getElementById("email").value;
+
+  let res = await fetch("/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({email:email})
+  });
+
+  let data = await res.json();
+
+  if(data.role == "admin"){
+    window.location.href="/chatpage";
+  }
+  else if(data.role=="user"){
+    window.location.href="/userpage";
+  }
+  else{
+    document.getElementById("msg").innerText="Email not found!";
+  }
+}
+</script>
+
+</body>
+</html>
